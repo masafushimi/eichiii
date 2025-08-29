@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>社内生成AI利用に関するリスクと対策方針</title>
+  <style>
+    body {
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      color: #333;
+      background-color: #f5f5f5;
+    }
+    
+    .slide-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    
+    .slide {
+      width: 900px;
+      height: 506px; /* 16:9 aspect ratio */
+      background-color: white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+      padding: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .slide-title {
+      background-color: #0a3d62;
+      color: white;
+      padding: 40px;
+      height: 426px;
+    }
+    
+    .slide-header {
+      position: absolute;
+      top: 15px;
+      left: 40px;
+      font-size: 14px;
+      color: #666;
+    }
+    
+    .slide-number {
+      position: absolute;
+      bottom: 15px;
+      right: 40px;
+      font-size: 14px;
+      color: #666;
+    }
+    
+    .title-main {
+      font-size: 36px;
+      margin-top: 120px;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+    
+    .title-sub {
+      font-size: 24px;
+      margin-top: 20px;
+      font-weight: 400;
+    }
+    
+    h1 {
+      font-size: 28px;
+      color: #0a3d62;
+      margin-bottom: 30px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #0a3d62;
+    }
+    
+    h2 {
+      font-size: 22px;
+      color: #0a3d62;
+      margin-top: 25px;
+      margin-bottom: 15px;
+    }
+    
+    ul, ol {
+      margin-bottom: 20px;
+    }
+    
+    li {
+      margin-bottom: 10px;
+      line-height: 1.5;
+    }
+    
+    .highlight {
+      color: #e74c3c;
+      font-weight: bold;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+    }
+    
+    th {
+      background-color: #0a3d62;
+      color: white;
+      padding: 12px;
+      text-align: left;
+      font-weight: 600;
+    }
+    
+    td {
+      padding: 12px;
+      border-bottom: 1px solid #ddd;
+      vertical-align: top;
+    }
+    
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+    
+    .two-column {
+      display: flex;
+      justify-content: space-between;
+    }
+    
+    .column {
+      width: 48%;
+    }
+    
+    .note {
+      font-size: 14px;
+      color: #666;
+      font-style: italic;
+      margin-top: 20px;
+    }
+    
+    .action-item {
+      background-color: #f0f8ff;
+      padding: 15px;
+      border-left: 4px solid #0a3d62;
+      margin-bottom: 15px;
+    }
+    
+    .bold {
+      font-weight: bold;
+    }
+    
+    .center-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+
+<div class="slide-container">
+  <!-- タイトルスライド -->
+  <div class="slide slide-title">
+    <div class="center-content">
+      <div class="title-main">社内生成AI利用に関するリスクと対策方針</div>
+      <div class="title-sub">～ルール策定による実効的リスク管理の提案～</div>
+    </div>
+    <div class="slide-number">1</div>
+  </div>
+
+  <!-- Executive Summary -->
+  <div class="slide">
+    <div class="slide-header">社内生成AI利用に関するリスクと対策方針</div>
+    <h1>1. Executive Summary</h1>
+    
+    <ul>
+      <li><span class="bold">現状：</span> 社内での生成AI利用を促進。業務効率化に貢献する一方、情報漏洩リスクと法的責任の懸念が増大</li>
+      <li><span class="bold">課題：</span> 個人情報・機密情報の漏洩と、それに伴う法的・信用リスクへの対応が不十分</li>
+      <li><span class="bold">提案：</span> 実効的なルール策定と社員教育により、コスト効率の高いリスク管理を実現</li>
+      <li><span class="bold">効果：</span> 「適切な管理責任」を果たした説明が可能となり、訴訟・信用リスクを軽減</li>
+      <li><span class="bold">要請：</span> ルール策定と教育実施に関する決裁、予算承認（人件費・教育コスト）</li>
+    </ul>
+    
+    <div class="slide-number">2</div>
+  </div>
+
+  <!-- 検討背景 -->
+  <div class="slide">
+    <div class="slide-header">社内生成AI利用に関するリスクと対策方針</div>
+    <h1>2. 課題認識とリスクの構造</h1>
+    
+    <h2>検討背景</h2>
+    <ul>
+      <li>社員の生成AI利用を促進して業務効率化を推進</li>
+      <li>利便性向上と業務効率化への貢献</li>
+      <li><span class="highlight">個人情報・機密情報の漏洩リスク</span>と<span class="highlight">法的責任の懸念</span>が増大</li>
+      <li>経営リスク（信用・法的リスク）対策が急務</li>
+    </ul>
+    
+    <div class="slide-number">3</div>
+  </div>
+
+  <!-- リスクの実態 -->
+  <div class="slide">
+    <div class="slide-header">社内生成AI利用に関するリスクと対策方針</div>
+    <h1>2. 課題認識とリスクの構造</h1>
+    
+    <h2>生成AIにおける情報漏洩の実態とリスク</h2>
+    
+    <table>
+      <tr>
+        <th width="25%">リスク項目</th>
+        <th width="35%">内容</th>
+        <th width="40%">実態と影響</th>
+      </tr>
+      <tr>
+        <td><span class="bold">個人情報の入力</span></td>
+        <td>無意識に氏名・連絡先などをAIに入力</td>
+        <td>法的リスク（個人情報保護法違反）</td>
+      </tr>
+      <tr>
+        <td><span class="bold">機密情報の入力</span></td>
+        <td>社外秘情報や業務ノウハウの入力</td>
+        <td>顧客・取引先への信用毀損</td>
+      </tr>
+      <tr>
+        <td><span class="bold">情報漏洩の証明困難</span></td>
+        <td>AIがどの情報を学習・出力するか不透明</td>
+        <td>漏洩元の特定はほぼ不可能</td>
+      </tr>
+      <tr>
+        <td><span class="bold">訴訟・取引停止リスク</span></td>
+        <td>顧客・取引先からの信用不安</td>
+        <td>取引見直し、訴訟、レピュテーションリスク</td>
+      </tr>
+    </table>
+    
+    <div class="slide-number">4</div>
+  </div>
+
+  <!-- 対応策の選択肢 -->
+  <div class="slide">
+    <div class="slide-header">社内生成AI利用に関するリスクと対策方針</div>
+    <h1>3. 対応策の選択肢と比較</h1>
+    
+    <h2>各段階ごとの対策・リスク比較表</h2>
+    
+    <table>
+      <tr>
+        <th width="20%">段階</th>
+        <th width="30%">運用方針</th>
+        <th width="30%">残るリスク</th>
+        <th width="20%">コスト／負荷</th>
+      </tr>
+      <tr>
+        <td><span class="bold">①自由利用</span></td>
+        <td>各自の判断に委ねる</td>
+        <td>情報漏洩リスク大、責任不明確</td>
+        <td>ゼロ（放置）</td>
+      </tr>
+      <tr>
+        <td><span class="bold">②ルール策定<br>（提案フェーズ）</span></td>
+        <td>利用ガイドラインを作成し、社員教育を実施<br>個人情報・機密情報の入力禁止</td>
+        <td>人的ミスによるリスクは残る<br>だが、「管理努力」を説明可能</td>
+        <td>ガイドライン作成・<br>教育コストのみ</td>
+      </tr>
+      <tr>
+        <td><span class="bold">③仕組み化</span></td>
+        <td>技術的制御（ツール導入・監査）を実施</td>
+        <td>不正利用・内部犯行リスクは残るが低減</td>
+        <td>年額数百万円の<br>ツール導入・監査費用</td>
+      </tr>
+    </table>
+    
+    <div class="slide-number">5</div>
+  </div>
+
+  <!-- 推奨アクション -->
+  <div class="slide">
+    <div class="slide-header">社内生成AI利用に関するリスクと対策方針</div>
+    <h1>4. 推奨アクションとその理由</h1>
+    
+    <h2>今回の提案</h2>
+    <div class="action-item">
+      <p><span class="bold">「②ルール策定・運用フェーズ」でリスクをコントロール</span></p>
+    </div>
+    
+    <div class="two-column">
+      <div class="column">
+        <h2>実施内容</h2>
+        <ul>
+          <li><span class="bold">社内利用ガイドライン策定</span>
+            <ul>
+              <li>個人情報・機密情報の取り扱いルールの明確化</li>
+            </ul>
+          </li>
+          <li><span class="bold">対象ツールの明確化</span>
+            <ul>
+              <li>利用可能なAIと利用禁止AIのリスト作成</li>
+            </ul>
+          </li>
+          <li><span class="bold">社内教育・研修の実施</span>
+            <ul>
+              <li>ガイドライン徹底（年1回実施）</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      
+      <div class="column">
+        <h2>ルール整備の効果</h2>
+        <ul>
+          <li>社内の安全管理措置が整い、<span class="highlight">「適切な管理責任」を果たした説明が可能</span></li>
+          <li>訴訟・信用リスクの軽減</li>
+          <li>顧客・取引先からのガバナンスに対する信頼向上</li>
+          <li>仕組み化へのステップアップも将来的に可能</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="slide-number">6</div>
+  </div>
+
+  <!-- 仕組み化フェーズ -->
+  <div class="slide">
+    <div class="slide-header">社内生成AI利用に関するリスクと対策方針</div>
+    <h1>4. 推奨アクションとその理由</h1>
+    
+    <h2>「仕組み化フェーズ」への見解（参考情報）</h2>
+    
+    <ul>
+      <li>現時点で「③仕組み化」への即時対応は<span class="highlight">コスト過大</span>・<span class="highlight">現実的な効果が限定的</span></li>
+      <li>今後、顧客要請・法令改正・利用拡大に応じて検討</li>
+      <li>将来的には、ツール導入のROIが明確になった段階で判断</li>
+    </ul>
+    
+    <div class="note">
+      注: 技術的制御は継続的なコストが発生するため、リスク評価とROI分析に基づいた慎重な判断が必要
+    </div>
+    
+    <div class="slide-number">7</div>
+  </div>
+
+  <!-- アクションプラン -->
+  <div class="slide">
+    <div class="slide-header">社内生成AI利用に関するリスクと対策方針</div>
+    <h1>5. 次のステップとアクションプラン</h1>
+    
+    <h2>次のアクションプラン</h2>
+    
+    <table>
+      <tr>
+        <th width="20%">ステップ</th>
+        <th width="50%">内容</th>
+        <th width="30%">期限</th>
+      </tr>
+      <tr>
+        <td><span class="bold">1</span></td>
+        <td>ガイドライン作成・レビュー</td>
+        <td>◯月中</td>
+      </tr>
+      <tr>
+        <td><span class="bold">2</span></td>
+        <td>社員説明会・研修</td>
+        <td>◯月末</td>
+      </tr>
+      <tr>
+        <td><span class="bold">3</span></td>
+        <td>定期的な見直し（年次）</td>
+        <td>年1回</td>
+      </tr>
+    </table>
+    
+    <div class="slide-number">8</div>
+  </div>
+
+  <!-- 経営判断ポイント -->
+  <div class="slide">
+    <div class="slide-header">社内生成AI利用に関するリスクと対策方針</div>
+    <h1>5. 次のステップとアクションプラン</h1>
+    
+    <h2>経営判断をお願いしたいポイント</h2>
+    
+    <div class="action-item">
+      <ul>
+        <li><span class="bold">ルール策定と教育実施に関する決裁</span></li>
+        <li><span class="bold">予算承認（人件費・教育コスト）</span></li>
+        <li><span class="bold">将来的な仕組み化検討への合意</span></li>
+      </ul>
+    </div>
+    
+    <h2>質疑応答用トピック例</h2>
+    <ul>
+      <li><span class="bold">ルール遵守の実効性は？</span> → 教育とガイドライン周知を強化</li>
+      <li><span class="bold">情報漏洩時の責任範囲は？</span> → 管理措置に基づき説明責任を果たす（過失なしを証明）</li>
+      <li><span class="bold">他社事例は？</span> → 多くがルール整備＋運用（仕組み化は大手・法令遵守が厳しい企業が中心）</li>
+    </ul>
+    
+    <div class="slide-number">9</div>
+  </div>
+</div>
+
+</body>
+</html>
