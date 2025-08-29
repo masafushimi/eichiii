@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>株式会社ユーグレナ様 承認・購買プロセスに関するインタビューサマリー</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Hiragino Sans', 'Noto Sans CJK JP', 'Original Yu Gothic', 'Yu Gothic', sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+        }
+        .controls {
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+        .button.hide {
+            background-color: #6c757d;
+        }
+        #preview-container {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+            height: 600px;
+            overflow: hidden;
+            background-color: #fff;
+        }
+        #preview-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="controls">
+            <p><strong>サマリーの表示をコントロールします</strong></p>
+            <button id="preview-button" class="button">プレビューを表示</button>
+            <button id="hide-button" class="button hide" style="display: none;">プレビューを隠す</button>
+        </div>
+        
+        <div id="preview-container" style="display: none;">
+            <iframe id="preview-iframe"></iframe>
+        </div>
+    </div>
+
+    <div id="content-for-iframe" style="display: none;">
+        <style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Hiragino Sans', 'Noto Sans CJK JP', 'Original Yu Gothic', 'Yu Gothic', sans-serif;
+                background-color: #f0f2f5;
+                color: #333;
+                margin: 0;
+                padding: 20px;
+            }
+            .summary-container {
+                max-width: 900px;
+                margin: auto;
+            }
+            .slide {
+                background-color: #ffffff;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                padding: 30px 40px;
+                margin-bottom: 25px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            }
+            h1, h2, h3 { color: #1a2c5b; border-bottom: 2px solid #e0e0e0; padding-bottom: 10px; margin-top: 0; }
+            h1 { font-size: 2em; text-align: center; border-bottom: 3px solid #1a2c5b; }
+            h2 { font-size: 1.6em; }
+            h3 { font-size: 1.2em; border-bottom: none; color: #005f9e; margin-bottom: 10px; }
+            ul { list-style: none; padding-left: 0; }
+            li {
+                background: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23005f9e"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>') no-repeat left center;
+                background-size: 20px;
+                padding-left: 30px;
+                margin-bottom: 15px;
+                line-height: 1.7;
+                font-size: 1.1em;
+            }
+            .highlight { background-color: #fff3cd; color: #856404; padding: 3px 8px; border-radius: 4px; font-weight: bold; }
+            .problem { border-left: 5px solid #d9534f; padding-left: 15px; margin-top: 15px; }
+            .solution { border-left: 5px solid #5cb85c; padding-left: 15px; margin-top: 15px; }
+            .meta-info { text-align: right; color: #666; font-size: 0.9em; }
+        </style>
+        <div class="summary-container">
+            <div class="slide">
+                <h1>承認・購買プロセスに関する<br>インタビューサマリー</h1><br>
+                <h3>対象企業：株式会社ユーグレナ様</h3>
+                <div class="meta-info">
+                    <p><strong>インタビュイー：</strong>IT推進部 部長 楠美様、吉田様</p>
+                    <p><strong>実施日：</strong>2025年7月23日</p>
+                    <p><strong>インタビュアー：</strong>株式会社H、リコージャパン株式会社</p>
+                </div>
+            </div>
+            <div class="slide">
+                <h2>背景と目的</h2>
+                <p>企業の成長に伴い複雑化する「承認・購買プロセス」。本インタビューでは、ユーグレナ社の現状と課題をヒアリングし、DXを加速させる次の一手を模索することを目的とします。</p>
+                <ul>
+                    <li>リコーの新規事業創出プログラム「TRIBUS」の一環として実施。</li>
+                    <li>ユーグレナ社のリアルな課題を深掘りし、開発中の新ソリューションの有効性を検証する。</li>
+                    <li>多くの企業に共通するであろう課題を抽出し、解決のヒントを探る。</li>
+                </ul>
+            </div>
+            <div class="slide">
+                <h2><span style="color:#d9534f;">❗️</span>最大の課題：出張手配プロセス</h2>
+                <p>最も深刻な課題は、複数のシステムが分断されている「出張手配」の領域に集中していました。</p>
+                <div class="problem">
+                    <h3>承認を待つ間に<span class="highlight">価格が30%変動</span></h3>
+                    <p>事前申請から承認までに生じるタイムラグが原因で、航空券や宿泊費が高騰。結果、予算超過や申請の手戻りが頻発。</p>
+                </div>
+                <div class="problem">
+                    <h3>「0円申請」による<span class="highlight">コストの不透明化</span></h3>
+                    <p>会社請求分は「0円」で経費申請する運用ルール。これにより、承認者は実際のコストを把握しないまま承認しており、コスト管理が形骸化。</p>
+                </div>
+                <div class="problem">
+                    <h3><span class="highlight">システムの分断</span>による二重業務</h3>
+                    <p>「楽々精算」と「AIトラベル」が連携しておらず、手作業での情報転記や二重確認に多くの工数を浪費。</p>
+                </div>
+            </div>
+            <div class="slide">
+                <h2>課題の背景にある3つの要因</h2>
+                <p>これらの問題は、単なるシステムの問題だけでなく、組織構造や社内ルールにも起因していました。</p>
+                <ul>
+                    <li><strong>複雑な組織体制：</strong>兼務者が多く、案件ごとに承認フローが変動。既存システムの標準機能では対応しきれない。</li>
+                    <li><strong>業務の属人化：</strong>複雑なフロー設定を、ITスキルを持つ特定の管理職（部長）が一人で担当。業務がブラックボックス化し、リスクも高い。</li>
+                    <li><strong>代替手段の形骸化：</strong>従業員の立て替え負担を軽減すべきコーポレートカードが、セキュリティ要件の厳しさから実質的に利用不可の状態。</li>
+                </ul>
+            </div>
+            <div class="slide">
+                <h2><span style="color:#5cb85c;">💡</span>提案ソリューションと期待される効果</h2>
+                <p>これらの課題に対し、申請と購買をシームレスに繋ぐ「ワークフローパーチェス（仮）」を提案。</p>
+                <div class="solution">
+                    <h3>コンセプト：申請から発注までをワンストップに</h3>
+                    <p>「ワークフローシステムで申請 → ECサイトに連携 → カート情報を自動で取り込み → 承認と同時に自動発注」を実現。</p>
+                </div>
+                <h3>期待される効果</h3>
+                <ul>
+                    <li><span class="highlight">価格・在庫を維持</span>したまま申請でき、手戻りを撲滅。</li>
+                    <li>手作業による転記・照合が不要になり、<span class="highlight">業務工数を大幅に削減</span>。</li>
+                    <li>正確な購買データが一元化され、<span class="highlight">コスト管理の精度が向上</span>。</li>
+                </ul>
+            </div>
+            <div class="slide">
+                <h2><span style="color:#1a2c5b;">✨</span>結論と今後の展望</h2>
+                <p>インタビューを通じて、ユーグレナ社が抱える課題の深刻度と、新ソリューションへの高い期待が明らかになりました。</p>
+                <h3>ユーグレナ社からの評価</h3>
+                <ul>
+                    <li>提案ソリューションに対し、<span class="highlight">「月額10〜15万円でも導入価値がある」</span>との高い評価。</li>
+                    <li>特に、<span class="highlight">「旅行会社との連携」</span>と<span class="highlight">「価格変動の許容範囲設定」</span>機能への期待が大きい。</li>
+                </ul>
+                <h3>今後の展望</h3>
+                <p>ユーグレナ社の課題は、多くの成長企業に共通するものです。申請から購買までのプロセスをシームレスに繋ぐことが、今後のコーポレートDXの鍵となると確信しました。</p>
+            </div>
+        </div>
+        </div>
+
+    <script>
+        // DOMが完全に読み込まれてからスクリプトを実行
+        document.addEventListener('DOMContentLoaded', () => {
+            const previewButton = document.getElementById('preview-button');
+            const hideButton = document.getElementById('hide-button');
+            const previewContainer = document.getElementById('preview-container');
+            const previewIframe = document.getElementById('preview-iframe');
+            const contentForIframe = document.getElementById('content-for-iframe');
+
+            previewButton.addEventListener('click', () => {
+                // プレビュー用コンテンツをiframeに書き込む
+                previewIframe.srcdoc = contentForIframe.innerHTML;
+                
+                // 表示/非表示の切り替え
+                previewContainer.style.display = 'block';
+                previewButton.style.display = 'none';
+                hideButton.style.display = 'inline-block';
+            });
+
+            hideButton.addEventListener('click', () => {
+                // 表示/非表示の切り替え
+                previewContainer.style.display = 'none';
+                previewIframe.srcdoc = ''; // iframeの中身をクリア
+                hideButton.style.display = 'none';
+                previewButton.style.display = 'inline-block';
+            });
+        });
+    </script>
+</body>
+</html>
