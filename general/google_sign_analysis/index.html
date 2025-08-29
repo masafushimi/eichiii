@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>インタラクティブ電子署名サービス比較 | 日本のビジネス利用における分析</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Harmony (Slate, Sky, Stone) -->
+    <!-- Application Structure Plan: The SPA is designed as a decision-making tool, not a simple report viewer. It starts with the main conclusion (Hero), moves to an interactive comparison dashboard (Core), explains the critical legal verdict on Google (Verdict), provides actionable advice via a persona-based recommender (Recommendations), and offers optional details in a deep-dive section. This structure guides the user from a high-level answer to specific, personalized insights, making the dense report content digestible and actionable. -->
+    <!-- Visualization & Content Choices: Report Info -> Goal -> Viz/Method -> Interaction -> Justification. 1. Overall Comparison -> Goal: Compare services holistically -> Viz: Radar Chart (Chart.js) -> Interaction: Filterable by category -> Justification: Provides a quick, visual summary of strengths/weaknesses. 2. Legal Compliance -> Goal: Highlight Google's critical flaws -> Viz: HTML/CSS Checklist with Icons -> Interaction: Static -> Justification: Clearly and immediately communicates the most important finding. 3. Service Selection -> Goal: Provide personalized recommendations -> Viz: HTML/CSS Cards -> Interaction: Clickable user personas -> Justification: Translates analytical conclusions into practical, user-centric advice. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+            color: #1e293b; /* slate-800 */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .tab-active {
+            border-color: #0284c7; /* sky-600 */
+            background-color: #f0f9ff; /* sky-50 */
+            color: #0c4a6e; /* sky-900 */
+            font-weight: 600;
+        }
+        .tab-inactive {
+            border-color: transparent;
+            color: #475569; /* slate-600 */
+        }
+        .persona-card {
+            transition: all 0.3s ease-in-out;
+            border: 2px solid #e2e8f0; /* slate-200 */
+        }
+        .persona-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            border-color: #38bdf8; /* sky-400 */
+        }
+        .recommendation-card {
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+        }
+        .hidden-item {
+            opacity: 0;
+            transform: translateY(10px);
+            height: 0;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+        .visible-item {
+            opacity: 1;
+            transform: translateY(0);
+            height: auto;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <h1 class="text-xl md:text-2xl font-bold text-slate-900">電子署名サービス徹底比較</h1>
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#conclusion" class="text-slate-600 hover:text-sky-600 font-medium">結論</a>
+                    <a href="#comparison" class="text-slate-600 hover:text-sky-600 font-medium">機能比較</a>
+                    <a href="#recommendation" class="text-slate-600 hover:text-sky-600 font-medium">推奨サービス</a>
+                    <a href="#legal" class="text-slate-600 hover:text-sky-600 font-medium">法的背景</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+
+        <section id="conclusion" class="text-center mb-16 md:mb-24">
+            <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4">Google電子署名は、日本のビジネス契約で使えるか？</h2>
+            <p class="text-xl md:text-2xl font-semibold text-sky-700 mb-6">結論：法的リスクを伴う外部契約には「使用不可」</p>
+            <p class="max-w-3xl mx-auto text-slate-600 text-base md:text-lg">
+                Google Workspaceのネイティブ電子署名機能は、手軽さの反面、日本の法規制が求める「本人性」と「非改ざん性」の証明レベルが不十分です。このため、法的な権利義務を発生させる契約での利用は重大なリスクを伴います。このページでは、主要サービスとの比較を通じて、なぜそう言えるのか、そしてあなたのビジネスに最適な選択肢は何かを対話的に探ります。
+            </p>
+        </section>
+
+        <section id="comparison" class="mb-16 md:mb-24">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-slate-900 mb-2">サービス別 機能比較ダッシュボード</h2>
+                <p class="text-slate-600">下のタブをクリックして、各サービスの強みと弱みを比較してください。</p>
+            </div>
+
+            <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg">
+                <div class="mb-8">
+                    <div class="chart-container">
+                        <canvas id="featureComparisonChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="border-b border-slate-200 mb-6">
+                    <nav class="flex flex-wrap -mb-px" id="comparison-tabs">
+                        <button data-target="legal" class="tab-active text-sm md:text-base font-medium text-center px-4 py-3 border-b-2 rounded-t-lg">
+                            法的準拠性
+                        </button>
+                        <button data-target="core" class="tab-inactive text-sm md:text-base font-medium text-center px-4 py-3 border-b-2 rounded-t-lg">
+                            基本機能
+                        </button>
+                        <button data-target="advanced" class="tab-inactive text-sm md:text-base font-medium text-center px-4 py-3 border-b-2 rounded-t-lg">
+                            高度な機能
+                        </button>
+                        <button data-target="cost" class="tab-inactive text-sm md:text-base font-medium text-center px-4 py-3 border-b-2 rounded-t-lg">
+                            価格
+                        </button>
+                    </nav>
+                </div>
+
+                <div id="comparison-content">
+                </div>
+            </div>
+        </section>
+        
+        <section id="verdict" class="mb-16 md:mb-24 bg-stone-50 p-6 md:p-10 rounded-xl">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-slate-900 mb-2">Google電子署名の致命的な欠点</h2>
+                <p class="text-slate-600">日本の電子署名法が求める中核要件を、Googleのネイティブ機能は満たしていません。</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <h3 class="font-bold text-lg mb-2">要件① 本人性の証明</h3>
+                    <p class="text-sm text-slate-500 mb-4">「誰が」署名したかを確実に証明する力</p>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between p-2 bg-red-50 rounded">
+                            <span class="font-medium text-red-800">Google</span>
+                            <span class="text-2xl text-red-500">△</span>
+                        </div>
+                         <p class="text-xs text-slate-500 px-2">メール認証のみで脆弱。多要素認証がない。</p>
+                        <div class="flex items-center justify-between p-2 bg-green-50 rounded">
+                            <span class="font-medium text-green-800">専用サービス</span>
+                            <span class="text-2xl text-green-500">◎</span>
+                        </div>
+                        <p class="text-xs text-slate-500 px-2">SMS認証やマイナンバーカード署名等、多彩な手段を提供。</p>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <h3 class="font-bold text-lg mb-2">要件② 非改ざん性の証明</h3>
+                    <p class="text-sm text-slate-500 mb-4">署名後に「改ざんされていない」ことの証明</p>
+                     <div class="space-y-3">
+                        <div class="flex items-center justify-between p-2 bg-red-50 rounded">
+                            <span class="font-medium text-red-800">Google</span>
+                            <span class="text-2xl text-red-500">✕</span>
+                        </div>
+                         <p class="text-xs text-slate-500 px-2">認定タイムスタンプがなく、客観的な証明が不可能。</p>
+                        <div class="flex items-center justify-between p-2 bg-green-50 rounded">
+                            <span class="font-medium text-green-800">専用サービス</span>
+                            <span class="text-2xl text-green-500">◎</span>
+                        </div>
+                        <p class="text-xs text-slate-500 px-2">認定タイムスタンプを付与し、法的要件を満たす。</p>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <h3 class="font-bold text-lg mb-2">結果：法的推定効</h3>
+                    <p class="text-sm text-slate-500 mb-4">裁判で「契約が有効」と推定される力</p>
+                     <div class="space-y-3">
+                        <div class="flex items-center justify-between p-2 bg-red-50 rounded">
+                            <span class="font-medium text-red-800">Google</span>
+                            <span class="text-2xl text-red-500">✕</span>
+                        </div>
+                         <p class="text-xs text-slate-500 px-2">推定効はほぼ期待できず、紛争時に自力で有効性を立証する必要がある。</p>
+                        <div class="flex items-center justify-between p-2 bg-green-50 rounded">
+                            <span class="font-medium text-green-800">専用サービス</span>
+                            <span class="text-2xl text-green-500">○</span>
+                        </div>
+                        <p class="text-xs text-slate-500 px-2">要件を満たす設計で、紛争時の立証責任を軽減できる。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="recommendation" class="mb-16 md:mb-24">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-slate-900 mb-2">あなたのビジネスに最適なサービスは？</h2>
+                <p class="text-slate-600">あなたの状況に最も近いものをクリックしてください。</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8" id="persona-selector">
+                <button data-persona="freelance" class="persona-card text-left p-6 rounded-lg bg-white">
+                    <span class="text-3xl">👤</span>
+                    <h3 class="font-bold text-lg mt-3 mb-1">個人事業主・小規模事業者</h3>
+                    <p class="text-sm text-slate-500">コストを抑えつつ、法的に有効な契約を始めたい。</p>
+                </button>
+                <button data-persona="sme" class="persona-card text-left p-6 rounded-lg bg-white">
+                    <span class="text-3xl">🏢</span>
+                    <h3 class="font-bold text-lg mt-3 mb-1">中堅・大手企業</h3>
+                    <p class="text-sm text-slate-500">国内法準拠とセキュリティを最重視し、全社展開も視野に入れている。</p>
+                </button>
+                <button data-persona="enterprise" class="persona-card text-left p-6 rounded-lg bg-white">
+                    <span class="text-3xl">🌐</span>
+                    <h3 class="font-bold text-lg mt-3 mb-1">多国籍企業・高度な連携が必要な企業</h3>
+                    <p class="text-sm text-slate-500">Salesforce等と連携し、複雑なワークフローを自動化したい。</p>
+                </button>
+            </div>
+
+            <div id="recommendation-results">
+                <div id="rec-freelance" class="recommendation-card hidden-item bg-white p-6 md:p-8 rounded-xl shadow-md border-l-4 border-sky-500"></div>
+                <div id="rec-sme" class="recommendation-card hidden-item bg-white p-6 md:p-8 rounded-xl shadow-md border-l-4 border-sky-500"></div>
+                <div id="rec-enterprise" class="recommendation-card hidden-item bg-white p-6 md:p-8 rounded-xl shadow-md border-l-4 border-sky-500"></div>
+            </div>
+        </section>
+
+        <section id="legal" class="bg-white p-6 md:p-8 rounded-xl shadow-lg">
+            <h2 class="text-2xl font-bold text-slate-900 mb-4 text-center">【任意】法的背景の深掘り</h2>
+             <div class="space-y-4 max-w-4xl mx-auto">
+                <details class="group bg-slate-50 p-4 rounded-lg">
+                    <summary class="font-medium cursor-pointer list-none flex justify-between items-center">
+                        <span>電子署名法とは？</span>
+                        <span class="transition-transform duration-300 group-open:rotate-180">▼</span>
+                    </summary>
+                    <div class="text-slate-600 mt-3 text-sm">
+                        <p>正式名称は「電子署名及び認証業務に関する法律」。電子文書が、紙の文書への署名や押印と同等の法的効力を持つためのルールを定めています。特に重要なのが、①その情報が本人によって作成されたこと（本人性）、②情報が改ざんされていないこと（非改ざん性）を証明できることです。</p>
+                    </div>
+                </details>
+                <details class="group bg-slate-50 p-4 rounded-lg">
+                    <summary class="font-medium cursor-pointer list-none flex justify-between items-center">
+                        <span>なぜ「立会人型」が主流なのか？</span>
+                         <span class="transition-transform duration-300 group-open:rotate-180">▼</span>
+                    </summary>
+                    <div class="text-slate-600 mt-3 text-sm">
+                        <p>契約者本人が高価な電子証明書を持つ必要がなく、メールアドレスさえあれば利用できる手軽さから、CloudSignなどの「立会人型（事業者署名型）」サービスが主流になりました。これは、サービス提供事業者が信頼できる第三者の「立会人」として、契約プロセス全体を記録・証明する方式です。2020年の政府見解により、この方式でも電子署名法の要件を満たせることが確認され、広く普及しました。</p>
+                    </div>
+                </details>
+                 <details class="group bg-slate-50 p-4 rounded-lg">
+                    <summary class="font-medium cursor-pointer list-none flex justify-between items-center">
+                        <span>タイムスタンプの重要性</span>
+                         <span class="transition-transform duration-300 group-open:rotate-180">▼</span>
+                    </summary>
+                    <div class="text-slate-600 mt-3 text-sm">
+                        <p>認定された時刻認証局（TSA）が発行するタイムスタンプは、「その時刻にその文書が存在したこと」と「それ以降改ざんされていないこと」を客観的に証明する、極めて重要な技術です。これは電子署名法だけでなく、電子帳簿保存法への対応においても必須の要件となります。</p>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-800 text-slate-300 mt-16">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-sm">
+            <p>このページは、公開情報を基に作成された分析レポートを対話的に表示するものです。最終的なサービス選定にあたっては、各サービスの公式サイトをご確認の上、専門家にご相談ください。</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const serviceData = {
+                'Google': {
+                    legal: 1, core: 2, advanced: 1, cost: 5,
+                    content: {
+                        legal: '<h3>法的準拠性: △ 懸念あり</h3><p class="text-sm">メール認証のみで本人性が脆弱。認定タイムスタンプがなく、電子署名法第3条の推定効は期待できません。法的な証拠能力に重大な懸念があります。</p>',
+                        core: '<h3>基本機能: ○ 限定的</h3><p class="text-sm">Google Drive/Docsとシームレスに連携。単純な直列ワークフローのみ対応。日常業務の延長で手軽に使えますが、複雑な承認フローには対応できません。</p>',
+                        advanced: '<h3>高度な機能: ✕ ほぼ皆無</h3><p class="text-sm">API連携や高度な本人確認、詳細な管理機能は提供されていません。独立したツールであり、システム連携や自動化は不可能です。</p>',
+                        cost: '<h3>価格: ◎ 無料</h3><p class="text-sm">対象のGoogle Workspaceプランに含まれており、追加費用なしで利用できます。コスト面での魅力は非常に高いです。</p>'
+                    }
+                },
+                'CloudSign': {
+                    legal: 5, core: 4, advanced: 4, cost: 3,
+                    content: {
+                        legal: '<h3>法的準拠性: ◎ 日本法に特化</h3><p class="text-sm">弁護士監修のもと、日本の電子署名法・電子帳簿保存法に完全準拠。認定タイムスタンプ、多要素認証に対応し、法的安定性が非常に高いです。</p>',
+                        core: '<h3>基本機能: ○ 充実</h3><p class="text-sm">テンプレート管理、承認権限設定など、ビジネスに必要な基本機能を網羅。直感的なUIで操作も容易です。</p>',
+                        advanced: '<h3>高度な機能: ○ 拡張性あり</h3><p class="text-sm">APIを提供し、システム連携が可能。IPアドレス制限やマイナンバーカード署名（オプション）など、高度なセキュリティ要件にも対応します。</p>',
+                        cost: '<h3>価格: ○ バランス型</h3><p class="text-sm">無料プランから利用可能。有料プランは固定費＋従量課金で、ユーザー数無制限なのが特徴。コストと機能のバランスに優れます。</p>'
+                    }
+                },
+                'DocuSign': {
+                    legal: 4, core: 5, advanced: 5, cost: 2,
+                    content: {
+                        legal: '<h3>法的準拠性: ○ グローバル標準</h3><p class="text-sm">米ESIGN法やEU eIDAS規則など国際標準に準拠。日本の法要件にも対応していますが、基本設計はグローバル標準です。</p>',
+                        core: '<h3>基本機能: ◎ 高機能</h3><p class="text-sm">直列・並列を組み合わせた複雑なワークフロー設定が可能。高度なテンプレート機能も備え、業務標準化に貢献します。</p>',
+                        advanced: '<h3>高度な機能: ◎ 市場リーダー</h3><p class="text-sm">強力なAPIと400以上の連携ソリューション。特にSalesforceとの連携は秀逸。ID検証や決済機能など、比類なき機能群を誇ります。</p>',
+                        cost: '<h3>価格: △ 高価格帯</h3><p class="text-sm">ユーザー単位の課金が基本。機能は豊富ですが、他サービスに比べて高価になる傾向があります。大規模な活用で真価を発揮します。</p>'
+                    }
+                },
+                'freeeサイン': {
+                    legal: 4, core: 3, advanced: 3, cost: 4,
+                    content: {
+                        legal: '<h3>法的準拠性: ○ 国内準拠</h3><p class="text-sm">日本の電子署名法・電子帳簿保存法に準拠。認定タイムスタンプも付与され、法的な安心感があります。</p>',
+                        core: '<h3>基本機能: ○ 十分</h3><p class="text-sm">柔軟なワークフロー設定や承認ルートのテンプレート化が可能。契約業務全体をカバーする設計思想です。</p>',
+                        advanced: '<h3>高度な機能: △ freee連携が強み</h3><p class="text-sm">APIを提供し、外部連携も可能ですが、最大の強みはfreee会計など自社製品とのシームレスな連携にあります。</p>',
+                        cost: '<h3>価格: ○ 中小企業向け</h3><p class="text-sm">無料プランあり。有料プランは月50件までの無料送信枠が含まれるなど、中小企業の利用実態に合わせた価格設定です。</p>'
+                    }
+                }
+            };
+
+            const chartLabels = ['法的準拠性', '基本機能', '高度な機能', '価格'];
+            const datasets = Object.keys(serviceData).map((key, index) => {
+                const colors = [
+                    'rgba(255, 99, 132, 0.2)',  // Red
+                    'rgba(54, 162, 235, 0.2)', // Blue
+                    'rgba(255, 206, 86, 0.2)', // Yellow
+                    'rgba(75, 192, 192, 0.2)'  // Green
+                ];
+                const borderColors = [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)'
+                ];
+                return {
+                    label: key,
+                    data: [
+                        serviceData[key].legal,
+                        serviceData[key].core,
+                        serviceData[key].advanced,
+                        serviceData[key].cost
+                    ],
+                    backgroundColor: colors[index % colors.length],
+                    borderColor: borderColors[index % borderColors.length],
+                    borderWidth: 2,
+                    pointBackgroundColor: borderColors[index % borderColors.length]
+                };
+            });
+
+            const chartConfig = {
+                type: 'radar',
+                data: {
+                    labels: chartLabels,
+                    datasets: datasets
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { color: '#d1d5db' },
+                            grid: { color: '#e5e7eb' },
+                            pointLabels: {
+                                font: { size: 14, weight: 'bold' },
+                                color: '#374151'
+                            },
+                            ticks: {
+                                beginAtZero: true,
+                                max: 5,
+                                stepSize: 1,
+                                backdropColor: 'rgba(255, 255, 255, 0.75)',
+                                color: '#6b7280'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: { size: 12 },
+                                color: '#1f2937'
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.r !== null) {
+                                        label += context.parsed.r + ' / 5';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+
+            const ctx = document.getElementById('featureComparisonChart').getContext('2d');
+            const featureChart = new Chart(ctx, chartConfig);
+
+            const comparisonTabs = document.getElementById('comparison-tabs');
+            const comparisonContent = document.getElementById('comparison-content');
+
+            function updateContent(target) {
+                let contentHtml = `<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">`;
+                Object.keys(serviceData).forEach(service => {
+                    contentHtml += `
+                        <div class="bg-slate-50 p-4 rounded-lg">
+                            <h4 class="font-bold text-lg mb-2 text-slate-800">${service}</h4>
+                            ${serviceData[service].content[target]}
+                        </div>
+                    `;
+                });
+                contentHtml += `</div>`;
+                comparisonContent.innerHTML = contentHtml;
+            }
+
+            comparisonTabs.addEventListener('click', (e) => {
+                if (e.target.tagName === 'BUTTON') {
+                    const target = e.target.dataset.target;
+                    
+                    Array.from(comparisonTabs.children).forEach(tab => {
+                        tab.classList.remove('tab-active');
+                        tab.classList.add('tab-inactive');
+                    });
+                    
+                    e.target.classList.add('tab-active');
+                    e.target.classList.remove('tab-inactive');
+                    
+                    updateContent(target);
+                }
+            });
+
+            updateContent('legal');
+
+            const personaSelector = document.getElementById('persona-selector');
+            const recommendationResults = document.getElementById('recommendation-results');
+            const recContents = {
+                freelance: `
+                    <h3 class="text-xl font-bold mb-2">推奨：CloudSign または freeeサイン</h3>
+                    <p class="mb-4 text-slate-600">特にfreee会計を利用中なら<strong>freeeサイン</strong>が、契約から会計まで一気通貫で効率化でき最適です。そうでなければ、国内法への準拠性が高く、無料プランから始められる<strong>CloudSign</strong>が堅実な選択肢となります。</p>
+                    <div class="flex flex-wrap gap-2 text-sm">
+                        <span class="bg-sky-100 text-sky-800 px-3 py-1 rounded-full font-medium">#低コスト</span>
+                        <span class="bg-sky-100 text-sky-800 px-3 py-1 rounded-full font-medium">#国内法準拠</span>
+                        <span class="bg-sky-100 text-sky-800 px-3 py-1 rounded-full font-medium">#バックオフィス連携</span>
+                    </div>`,
+                sme: `
+                    <h3 class="text-xl font-bold mb-2">推奨：CloudSign</h3>
+                    <p class="mb-4 text-slate-600">「弁護士監修」による国内法への強い準拠性、メガバンク基準のセキュリティ、そしてユーザー数無制限の料金体系が魅力です。多くの日本企業にとって最もバランスが取れており、将来の拡張性も高い安全な選択肢と言えます。</p>
+                     <div class="flex flex-wrap gap-2 text-sm">
+                        <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full font-medium">#セキュリティ重視</span>
+                        <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full font-medium">#コンプライアンス</span>
+                        <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full font-medium">#全社展開</span>
+                    </div>`,
+                enterprise: `
+                    <h3 class="text-xl font-bold mb-2">推奨：DocuSign</h3>
+                    <p class="mb-4 text-slate-600">比類なき高度な機能群、特にSalesforce等との深い連携や複雑なワークフロー自動化は、業務プロセスに契約を組み込みたい企業にとって不可欠です。グローバルな法規制への対応力も高く、多国籍企業に最適です。</p>
+                     <div class="flex flex-wrap gap-2 text-sm">
+                        <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full font-medium">#システム連携</span>
+                        <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full font-medium">#ワークフロー自動化</span>
+                        <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full font-medium">#グローバル対応</span>
+                    </div>`
+            };
+
+            Object.keys(recContents).forEach(key => {
+                document.getElementById(`rec-${key}`).innerHTML = recContents[key];
+            });
+
+            personaSelector.addEventListener('click', (e) => {
+                const button = e.target.closest('button');
+                if (button) {
+                    const persona = button.dataset.persona;
+                    
+                    Array.from(recommendationResults.children).forEach(card => {
+                        card.classList.add('hidden-item');
+                        card.classList.remove('visible-item');
+                    });
+
+                    const targetCard = document.getElementById(`rec-${persona}`);
+                    targetCard.classList.remove('hidden-item');
+                    targetCard.classList.add('visible-item');
+                    
+                    targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            });
+            
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
