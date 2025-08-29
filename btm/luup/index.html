@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>インタラクティブBTM選定ガイド</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: The application is designed to guide the user from a high-level summary to detailed, interactive exploration, and finally to a personalized recommendation. It starts with the main recommendation upfront (Executive Summary), followed by an interactive dashboard allowing comparison by different facets (cost, features, etc.). This is more user-centric than a linear report, enabling users to focus on their priorities. It concludes with a simple quiz to provide a tailored suggestion, making the report's findings more actionable. -->
+    <!-- Visualization & Content Choices: Report Info -> Goal -> Viz/Presentation Method -> Interaction -> Justification. 1. Overall Strengths -> Compare -> Radar Chart -> View -> Provides a quick, multi-dimensional visual summary of qualitative analysis. 2. Cost Structure -> Compare -> Icon-based Cards -> View -> Replaced bar chart of all-zero values with a card layout that clearly shows base fees and, more importantly, the differing fee models (the 'note'), which is more informative. 3. Feature List -> Compare -> Icon-based Cards -> View -> More scannable and visually engaging than a dense table. 4. Final Recommendation -> Guide -> Interactive Quiz -> User Selection -> Personalizes the report's conclusion and increases user engagement. All interactions are handled by vanilla JS. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #FDFCFB;
+            color: #44403C;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .tab-button.active {
+            background-color: #0D9488;
+            color: white;
+            border-color: #0D9488;
+        }
+        .quiz-option:has(input:checked) {
+            border-color: #0D9488;
+            background-color: #F0FDFA;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-7xl">
+
+        <header class="text-center mb-12">
+            <h1 class="text-3xl md:text-4xl font-bold text-teal-800 mb-2">インタラクティブ BTM選定ガイド</h1>
+            <p class="text-lg text-stone-600 mb-6">貴社に最適なビジネストラベルマネジメントシステムを見つけましょう。</p>
+            <div class="flex justify-center">
+                <a href="https://docs.google.com/document/d/1WVdhJlvlclW0E-ZUGO7fkR_48X51CV1rMs1idExHDWg/edit?usp=sharing" class="inline-block bg-white hover:bg-stone-50 text-teal-700 font-semibold py-2 px-6 border border-teal-600 rounded-lg shadow-sm transition-all duration-300">
+                    詳細分析レポート全文はこちら 📄
+                </a>
+            </div>
+        </header>
+
+        <section id="recommendation" class="mb-16 bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-stone-200">
+            <h2 class="text-2xl font-bold mb-4 text-center text-teal-700">はじめに：分析と推奨の概要</h2>
+            <p class="text-stone-700 mb-6 text-center max-w-3xl mx-auto">
+                本ガイドは、主要なBTMサービス3社（ピカパカ出張DX, 出張手配プラス, リロ・エクセル インターナショナル）を多角的に分析し、貴社の意思決定を支援します。分析の結果、各社は異なる強みを持つことが明らかになりました。総合的なバランスを考慮し、テクノロジー活用による効率化とコスト削減を両立する<strong class="text-teal-600">「ピカパカ出張DX」</strong>を第一推奨とします。ただし、貴社の優先順位によっては他の選択肢が最適となる場合もあります。
+            </p>
+            <div class="grid md:grid-cols-3 gap-6 text-center">
+                <div class="border-2 border-teal-500 bg-teal-50 p-6 rounded-xl">
+                    <h3 class="font-bold text-xl mb-2 text-teal-800">第一推奨</h3>
+                    <p class="text-2xl font-bold mb-2">ピカパカ出張DX</p>
+                    <p class="text-sm text-teal-700">コスト、機能、ガバナンスのバランスが取れた万能型プラットフォーム。</p>
+                </div>
+                <div class="border border-stone-300 bg-stone-50 p-6 rounded-xl">
+                    <h3 class="font-bold text-xl mb-2 text-stone-800">代替推奨 1</h3>
+                    <p class="text-2xl font-bold mb-2">出張手配プラス</p>
+                    <p class="text-sm text-stone-700">導入コストを最優先し、国内出張が中心の企業向け。</p>
+                </div>
+                <div class="border border-stone-300 bg-stone-50 p-6 rounded-xl">
+                    <h3 class="font-bold text-xl mb-2 text-stone-800">代替推奨 2</h3>
+                    <p class="text-2xl font-bold mb-2">リロ・エクセル</p>
+                    <p class="text-sm text-stone-700">海外渡航の危機管理と従業員の安全を最重要視する企業向け。</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="dashboard" class="mb-8">
+            <h2 class="text-2xl font-bold mb-6 text-center">インタラクティブ比較ダッシュボード</h2>
+            <p class="text-stone-700 mb-8 text-center max-w-3xl mx-auto">下のボタンをクリックして、比較したい項目を選んでください。グラフや情報が動的に切り替わります。</p>
+            <div id="tabs" class="flex flex-wrap justify-center gap-2 md:gap-4 mb-8">
+                <button data-tab="overall" class="tab-button active text-sm md:text-base font-semibold py-2 px-4 rounded-full border-2 border-stone-300 transition-all duration-300">総合評価</button>
+                <button data-tab="cost" class="tab-button text-sm md:text-base font-semibold py-2 px-4 rounded-full border-2 border-stone-300 transition-all duration-300">費用構造</button>
+                <button data-tab="features" class="tab-button text-sm md:text-base font-semibold py-2 px-4 rounded-full border-2 border-stone-300 transition-all duration-300">機能と手配範囲</button>
+                <button data-tab="support" class="tab-button text-sm md:text-base font-semibold py-2 px-4 rounded-full border-2 border-stone-300 transition-all duration-300">サポートと危機管理</button>
+            </div>
+
+            <div id="tab-content" class="bg-white p-4 md:p-8 rounded-2xl shadow-lg border border-stone-200 min-h-[450px]">
+                <div id="overall-content" class="tab-pane active">
+                     <h3 class="text-xl font-bold text-center mb-2">総合評価：サービス特性の可視化</h3>
+                     <p class="text-sm text-stone-600 text-center mb-4 max-w-2xl mx-auto">レポートの分析に基づき、各サービスの強みを5段階で評価し、レーダーチャートで示しました。各社がどの領域に注力しているかが一目でわかります。</p>
+                    <div class="chart-container">
+                        <canvas id="radarChart"></canvas>
+                    </div>
+                </div>
+                <div id="cost-content" class="tab-pane hidden">
+                    <h3 class="text-xl font-bold text-center mb-4">費用構造の比較</h3>
+                    <p class="text-sm text-stone-600 text-center mb-8 max-w-2xl mx-auto">各サービスの費用構造を比較します。初期・月額費用は0円ですが、実際のコストは手数料モデルによって変動します。</p>
+                    <div id="cost-grid" class="grid md:grid-cols-3 gap-6"></div>
+                </div>
+                <div id="features-content" class="tab-pane hidden">
+                    <h3 class="text-xl font-bold text-center mb-4">機能と手配範囲の比較</h3>
+                     <p class="text-sm text-stone-600 text-center mb-8 max-w-2xl mx-auto">各サービスが提供する主な機能と手配可能な商材を一覧で比較します。アイコンは各機能の有無や強みを示しています。</p>
+                    <div id="features-grid" class="grid md:grid-cols-3 gap-6"></div>
+                </div>
+                <div id="support-content" class="tab-pane hidden">
+                    <h3 class="text-xl font-bold text-center mb-4">サポートと危機管理体制の比較</h3>
+                    <p class="text-sm text-stone-600 text-center mb-8 max-w-2xl mx-auto">出張時のトラブル対応や、従業員の安全を守るための体制を比較します。特に海外出張が多い企業にとって重要な項目です。</p>
+                    <div id="support-grid" class="grid md:grid-cols-3 gap-6"></div>
+                </div>
+            </div>
+        </section>
+        
+        <div class="text-center mb-16">
+             <a href="#quiz" class="inline-block bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105">
+                最適なサービスを診断する ✨
+            </a>
+        </div>
+
+        <section id="quiz" class="mb-16">
+            <h2 class="text-2xl font-bold mb-6 text-center">貴社に最適なBTMは？ 簡単診断</h2>
+             <p class="text-stone-700 mb-8 text-center max-w-3xl mx-auto">
+                1つだけ質問です。貴社がBTM導入において最も重視する項目を以下から選んでください。貴社のニーズに合ったサービスを提案します。
+            </p>
+            <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-stone-200">
+                <fieldset>
+                    <legend class="text-xl font-semibold mb-6 text-center">Q. 貴社の最優先事項は何ですか？</legend>
+                    <div id="quiz-options" class="grid md:grid-cols-3 gap-4">
+                        <label class="quiz-option block p-6 border-2 border-stone-300 rounded-xl cursor-pointer transition-all duration-300 hover:border-teal-400">
+                            <input type="radio" name="priority" value="balance" class="sr-only">
+                            <h4 class="font-bold text-lg mb-2">効率化と統制の両立</h4>
+                            <p class="text-sm text-stone-600">テクノロジーで出張プロセス全体を自動化し、コスト削減とガバナンス強化を同時に実現したい。</p>
+                        </label>
+                        <label class="quiz-option block p-6 border-2 border-stone-300 rounded-xl cursor-pointer transition-all duration-300 hover:border-teal-400">
+                            <input type="radio" name="cost" value="cost" class="sr-only">
+                            <h4 class="font-bold text-lg mb-2">導入コストの最小化</h4>
+                            <p class="text-sm text-stone-600">まずは費用をかけずにBTMを試したい。特に国内出張が多く、手軽に始められることが重要。</p>
+                        </label>
+                        <label class="quiz-option block p-6 border-2 border-stone-300 rounded-xl cursor-pointer transition-all duration-300 hover:border-teal-400">
+                            <input type="radio" name="safety" value="safety" class="sr-only">
+                            <h4 class="font-bold text-lg mb-2">海外渡航の安全性</h4>
+                            <p class="text-sm text-stone-600">従業員の安全確保が最優先。複雑な海外出張が多く、24時間体制の危機管理サポートが不可欠。</p>
+                        </label>
+                    </div>
+                </fieldset>
+                <div id="quiz-result" class="mt-8 hidden"></div>
+            </div>
+        </section>
+
+        <footer class="text-center text-sm text-stone-500 pt-8 border-t">
+            <p>このアプリケーションは、提供されたBTM比較分析レポートに基づき生成されました。</p>
+            <p>最終的な導入判断は、各サービス提供元への直接のお問い合わせと詳細な見積もりに基づいて行ってください。</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const BTMData = {
+                pikapaka: {
+                    name: "ピカパカ出張DX",
+                    scores: { "コスト効率": 4, "業務効率化": 5, "内部統制": 5, "サポート": 3, "危機管理": 2 },
+                    costs: { initial: 0, monthly: 0, note: "利用額に応じた従量課金(0-5%)。取扱手数料は非公開。" },
+                    features: [
+                        { icon: '✈️', text: '国内外132社の航空券（LCC含む）' },
+                        { icon: '🏨', text: '64万軒のホテル' },
+                        { icon: '🚅', text: '新幹線（チケットレス対応）' },
+                        { icon: '�', text: '強力な出張規定遵守機能' },
+                        { icon: '🔄', text: '主要な経費精算システムと連携' },
+                    ],
+                    support: [
+                        { icon: '👥', text: '経験豊富なスタッフによるサポート' },
+                        { icon: '💻', text: 'オンライン中心の解決' },
+                        { icon: '⚠️', text: '危機管理機能は限定的' },
+                    ],
+                    recommendation: {
+                        title: "推奨：ピカパカ出張DX",
+                        description: "貴社には、テクノロジーによる効率化と強力なガバナンスを両立できる「ピカパカ出張DX」が最適です。豊富な選択肢による直接コスト削減と、自動化された規定遵守機能による間接コスト削減の両方を実現できます。将来の事業拡大にも対応しやすい、バランスの取れた選択肢です。"
+                    }
+                },
+                plus: {
+                    name: "出張手配プラス",
+                    scores: { "コスト効率": 5, "業務効率化": 3, "内部統制": 3, "サポート": 4, "危機管理": 3 },
+                    costs: { initial: 0, monthly: 0, note: "取扱手数料は非公開。要問合せ。" },
+                    features: [
+                        { icon: '🏨', text: '楽天・じゃらんとシステム連携' },
+                        { icon: '✈️', text: '独自の割引航空運賃' },
+                        { icon: '📞', text: '専門スタッフによる代理手配' },
+                        { icon: '📄', text: '請求書の一本化で経理を効率化' },
+                        { icon: '⏳', text: '便利な「仮予約」機能' },
+                    ],
+                    support: [
+                        { icon: '📞', text: '旅行会社ならではの手厚い人的サポート' },
+                        { icon: '👍', text: 'トラブル時の迅速な対応に定評' },
+                        { icon: '🌍', text: '基本的な危機管理機能を搭載' },
+                    ],
+                    recommendation: {
+                        title: "推奨：出張手配プラス",
+                        description: "貴社には、初期・月額費用が無料で導入リスクを最小限に抑えられる「出張手配プラス」が最適です。特に国内出張が中心で、まずはスモールスタートでBTMの効果を試したい場合に適しています。ただし、導入前に必ず取扱手数料を確認し、総コストを比較検討することが重要です。"
+                    }
+                },
+                relo: {
+                    name: "リロ・エクセル",
+                    scores: { "コスト効率": 2, "業務効率化": 2, "内部統制": 4, "サポート": 5, "危機管理": 5 },
+                    costs: { initial: 0, monthly: 0, note: "手配毎の固定手数料（国内550円～、海外2,200円～）" },
+                    features: [
+                        { icon: '🌍', text: '複雑な海外旅程の手配に強み' },
+                        { icon: '🛂', text: 'ビザ手配など専門的サポート' },
+                        { icon: '📊', text: '出張データの分析・コンサルティング' },
+                        { icon: '🔒', text: '専門家による人的な規定遵守' },
+                        { icon: '🏢', text: '海外赴任サポートも提供' },
+                    ],
+                    support: [
+                        { icon: '🚨', text: '24時間365日の緊急ダイヤル' },
+                        { icon: '🛰️', text: '強力な出張者所在管理システム' },
+                        { icon: '🛡️', text: '企業の安全配慮義務（Duty of Care）を実践' },
+                    ],
+                    recommendation: {
+                        title: "推奨：リロ・エクセル インターナショナル",
+                        description: "貴社には、従業員の安全確保と危機管理を最優先する「リロ・エクセル インターナショナル」が戦略的パートナーとして最適です。特に、政情不安な地域への渡航や複雑な旅程を含む海外出張が多い場合に、その真価を発揮します。コスト以上の「安心」と「安全」を確保するための投資と位置づけられます。"
+                    }
+                }
+            };
+
+            let radarChart;
+
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+
+            function switchTab(tab) {
+                tabButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.tab === tab));
+                tabPanes.forEach(pane => pane.classList.toggle('hidden', pane.id !== `${tab}-content`));
+                tabPanes.forEach(pane => pane.classList.toggle('active', pane.id === `${tab}-content`));
+
+                if (tab === 'overall') initRadarChart();
+                if (tab === 'cost') renderCostGrid();
+                if (tab === 'features') renderGrid('features');
+                if (tab === 'support') renderGrid('support');
+            }
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => switchTab(button.dataset.tab));
+            });
+            
+            function initRadarChart() {
+                const ctx = document.getElementById('radarChart').getContext('2d');
+                if (radarChart) radarChart.destroy();
+                radarChart = new Chart(ctx, {
+                    type: 'radar',
+                    data: {
+                        labels: Object.keys(BTMData.pikapaka.scores),
+                        datasets: [{
+                            label: BTMData.pikapaka.name,
+                            data: Object.values(BTMData.pikapaka.scores),
+                            fill: true,
+                            backgroundColor: 'rgba(13, 148, 136, 0.2)',
+                            borderColor: 'rgb(13, 148, 136)',
+                            pointBackgroundColor: 'rgb(13, 148, 136)',
+                        }, {
+                            label: BTMData.plus.name,
+                            data: Object.values(BTMData.plus.scores),
+                            fill: true,
+                            backgroundColor: 'rgba(249, 115, 22, 0.2)',
+                            borderColor: 'rgb(249, 115, 22)',
+                            pointBackgroundColor: 'rgb(249, 115, 22)',
+                        }, {
+                            label: BTMData.relo.name,
+                            data: Object.values(BTMData.relo.scores),
+                            fill: true,
+                            backgroundColor: 'rgba(120, 113, 108, 0.2)',
+                            borderColor: 'rgb(120, 113, 108)',
+                            pointBackgroundColor: 'rgb(120, 113, 108)',
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            r: {
+                                angleLines: { color: '#E7E5E4' },
+                                grid: { color: '#E7E5E4' },
+                                pointLabels: { font: { size: 12 } },
+                                suggestedMin: 0,
+                                suggestedMax: 5,
+                                ticks: { stepSize: 1, backdropColor: '#FDFCFB' }
+                            }
+                        },
+                        plugins: {
+                            legend: { position: 'top' },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) label += ': ';
+                                        label += context.raw;
+                                        return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            function renderCostGrid() {
+                const container = document.getElementById('cost-grid');
+                container.innerHTML = '';
+                Object.values(BTMData).forEach(company => {
+                    const card = document.createElement('div');
+                    card.className = 'bg-stone-50 p-6 rounded-xl border flex flex-col';
+                    card.innerHTML = `
+                        <h4 class="font-bold text-lg mb-4 text-center text-stone-800">${company.name}</h4>
+                        <div class="flex-grow">
+                            <div class="mb-4">
+                                <p class="text-sm text-stone-600">初期費用</p>
+                                <p class="text-2xl font-bold text-teal-700">${company.costs.initial.toLocaleString()}円</p>
+                            </div>
+                            <div class="mb-4">
+                                <p class="text-sm text-stone-600">月額費用</p>
+                                <p class="text-2xl font-bold text-teal-700">${company.costs.monthly.toLocaleString()}円</p>
+                            </div>
+                            <div>
+                                <p class="text-sm font-semibold text-stone-600">手数料モデル</p>
+                                <p class="text-sm text-stone-700 mt-1 p-3 bg-stone-100 rounded-md">${company.costs.note}</p>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            }
+
+            function renderGrid(type) {
+                const container = document.getElementById(`${type}-grid`);
+                container.innerHTML = '';
+                Object.values(BTMData).forEach(company => {
+                    const card = document.createElement('div');
+                    card.className = 'bg-stone-50 p-6 rounded-xl border';
+                    let listItems = company[type].map(item =>
+                        `<li class="flex items-start mb-2"><span class="mr-3 text-xl">${item.icon}</span><span class="text-stone-700">${item.text}</span></li>`
+                    ).join('');
+                    card.innerHTML = `
+                        <h4 class="font-bold text-lg mb-4 text-center">${company.name}</h4>
+                        <ul class="text-sm">${listItems}</ul>
+                    `;
+                    container.appendChild(card);
+                });
+            }
+            
+            const quizOptions = document.querySelectorAll('input[name="priority"]');
+            const quizResultContainer = document.getElementById('quiz-result');
+            
+            quizOptions.forEach(option => {
+                option.addEventListener('change', (e) => {
+                    const selectedValue = e.target.value;
+                    let resultData;
+                    if (selectedValue === 'balance') resultData = BTMData.pikapaka.recommendation;
+                    else if (selectedValue === 'cost') resultData = BTMData.plus.recommendation;
+                    else if (selectedValue === 'safety') resultData = BTMData.relo.recommendation;
+
+                    if (resultData) {
+                        quizResultContainer.innerHTML = `
+                            <div class="bg-teal-50 border-l-4 border-teal-500 p-6 rounded-lg">
+                                <h4 class="font-bold text-xl text-teal-800 mb-2">${resultData.title}</h4>
+                                <p class="text-teal-900">${resultData.description}</p>
+                            </div>
+                        `;
+                        quizResultContainer.classList.remove('hidden');
+                    }
+                });
+            });
+
+            switchTab('overall');
+        });
+    </script>
+</body>
+</html>
+�
