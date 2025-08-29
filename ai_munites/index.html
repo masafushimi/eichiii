@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MYGPTs エイチの勉強会 - グラフィックレコーディング</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Kaisei+Decol&family=Yomogi&family=Zen+Kurenaido&display=swap');
+        
+        :root {
+            --fashion-1: #593C47;
+            --fashion-2: #F2E63D;
+            --fashion-3: #F2C53D;
+            --fashion-4: #F25C05;
+            --fashion-5: #F24405;
+            --text-dark: #334155;
+            --text-heading: #1e40af;
+            --text-subtitle: #475569;
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Zen Kurenaido', sans-serif;
+            background-color: #f8f9fa;
+            color: var(--text-dark);
+            line-height: 1.4;
+            position: relative;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23593c47' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 3px dashed var(--fashion-3);
+            padding-bottom: 15px;
+        }
+        
+        .title {
+            font-family: 'Kaisei Decol', serif;
+            font-size: 32px;
+            font-weight: bold;
+            background: linear-gradient(to right, var(--fashion-1), var(--fashion-5));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+            position: relative;
+            margin-bottom: 10px;
+        }
+        
+        .title::after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-image: url("data:image/svg+xml,%3Csvg width='70' height='3' viewBox='0 0 70 3' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 1.5C0 1.5 10 3 15 1.5C20 0 25 0 35 1.5C45 3 50 0 55 1.5C60 3 70 1.5 70 1.5' stroke='%23F2C53D' stroke-width='2'/%3E%3C/svg%3E");
+            background-repeat: repeat-x;
+        }
+        
+        .date {
+            font-family: 'Yomogi', cursive;
+            font-size: 16px;
+            color: var(--text-subtitle);
+        }
+        
+        .content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .column {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .summary {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            margin-bottom: 30px;
+            backdrop-filter: blur(4px);
+            border: 2px solid var(--fashion-2);
+        }
+        
+        .summary::before {
+            content: "まとめ";
+            font-family: 'Kaisei Decol', serif;
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            background-color: var(--fashion-2);
+            padding: 2px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 16px;
+            color: var(--fashion-1);
+            box-shadow: var(--shadow-sm);
+            transform: rotate(-2deg);
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            transition: transform 0.3s ease;
+            border-left: 4px solid var(--fashion-4);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .section-title {
+            font-family: 'Kaisei Decol', serif;
+            font-size: 18px;
+            color: var(--text-heading);
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 2px dashed var(--fashion-3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-title::before {
+            content: "📌";
+        }
+        
+        .card p {
+            font-size: 14px;
+            color: var(--text-dark);
+        }
+        
+        .highlight {
+            background: linear-gradient(transparent 60%, var(--fashion-2) 40%);
+            font-weight: bold;
+            padding: 0 2px;
+        }
+        
+        .person {
+            font-weight: bold;
+            color: var(--fashion-5);
+            display: inline-block;
+            position: relative;
+        }
+        
+        .person::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--fashion-5);
+            opacity: 0.5;
+        }
+        
+        .time-stamp {
+            font-size: 12px;
+            color: var(--text-subtitle);
+            background-color: rgba(242, 198, 61, 0.2);
+            padding: 2px 5px;
+            border-radius: 4px;
+            margin-left: 5px;
+        }
+        
+        .attendees {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .attendee {
+            background-color: white;
+            box-shadow: var(--shadow-sm);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            color: var(--fashion-1);
+            border: 1px dashed var(--fashion-3);
+        }
+        
+        .attendee::before {
+            content: "👤";
+            margin-right: 5px;
+        }
+        
+        .arrow {
+            position: absolute;
+            width: 60px;
+            height: 30px;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='30' viewBox='0 0 60 30' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 15C20 5 40 25 58 15M58 15L50 5M58 15L50 25' stroke='%23F25C05' stroke-width='2'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            z-index: 10;
+        }
+        
+        .action-item {
+            background-color: rgba(242, 92, 5, 0.1);
+            border: 2px dashed var(--fashion-4);
+            border-radius: 8px;
+            padding: 10px 15px;
+            margin-top: 10px;
+            font-weight: bold;
+            position: relative;
+        }
+        
+        .action-item::before {
+            content: "🔍";
+            margin-right: 8px;
+        }
+        
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 3px dashed var(--fashion-3);
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-subtitle);
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                flex-direction: column;
+            }
+            
+            .column {
+                flex: 100%;
+            }
+            
+            .title {
+                font-size: 28px;
+            }
+            
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div>
+                <h1 class="title">MYGPTs エイチの勉強会</h1>
+                <div class="attendees">
+                    <div class="attendee">Eichiii</div>
+                    <div class="attendee">室屋里緒</div>
+                    <div class="attendee">高堂萌人</div>
+                    <div class="attendee">佐藤健太</div>
+                    <div class="attendee">名取やよい</div>
+                    <div class="attendee">伏見</div>
+                    <div class="attendee">濵崎香菜</div>
+                    <div class="attendee">園田麻衣子</div>
+                </div>
+            </div>
+            <div class="date">2025年3月21日</div>
+        </div>
+        
+        <div class="summary">
+            <p><span class="person">伏見</span>氏は<span class="highlight">SQLを用いたデータ抽出・分析</span>、データベース構造の説明、GPT活用によるエラー処理やキーワード検索、コンシェルジュ業務効率化、マニュアル作成支援、<span class="highlight">RPAとGPT連携による業務自動化</span>を実演・解説しました。<span class="person">名取やよい</span>氏、<span class="person">高堂萌人</span>氏、<span class="person">室屋里緒</span>氏、<span class="person">園田麻衣子</span>氏らが参加し、Ridash利用に関する研修の必要性や、AI活用における注意点、個人情報保護ガイドライン整備などが議論されました。今後の予定として、<span class="highlight">Ridash研修の実施</span>と<span class="highlight">個人情報保護ガイドラインの整備</span>が挙げられます。</p>
+        </div>
+        
+        <div class="content">
+            <div class="column">
+                <div class="card">
+                    <h2 class="section-title">SQLを用いたデータ抽出と分析</h2>
+                    <p><span class="person">伏見</span>氏は、SQLを用いて会社のデータベースから様々な情報を抽出・分析する方法を実演しました。具体的には、今月の売上<span class="time-stamp">00:00:00</span>、先月の利益<span class="time-stamp">00:02:06</span>、特定企業の売上・利益<span class="time-stamp">00:03:18</span>などの情報を取得することに成功し、その効率性の高さを示しました。</p>
+                    <p><span class="person">名取やよい</span>氏も、利益計算に関するSQLクエリの実行を依頼し、その結果を確認しました<span class="time-stamp">00:02:06</span>。</p>
+                </div>
+                
+                <div class="card">
+                    <h2 class="section-title">データベース構造の理解</h2>
+                    <p><span class="person">伏見</span>氏は、会社のデータベースのスキーマを説明し<span class="time-stamp">00:03:18</span>、各テーブル（<span class="highlight">銀行データ</span>、<span class="highlight">コンシェルジュメッセージ</span>、<span class="highlight">ToDoリスト</span>、<span class="highlight">クライアント情報</span>、<span class="highlight">請求情報</span>など）がどのようなデータを含んでいるかを解説しました。</p>
+                    <p>これにより、参加者はデータベースの構造を理解し、より効果的なデータ抽出を行うことができるようになりました。</p>
+                </div>
+                
+                <div class="card">
+                    <h2 class="section-title">エラー処理とGPTの活用</h2>
+                    <p><span class="person">伏見</span>氏は、GPTがエラーを返す場合の対処法として、エラーメッセージをコピーペーストしてGPTに提示することを推奨しました。これにより、GPTがエラーの原因を分析し、より適切な回答を生成する可能性が高まると説明しました。</p>
+                    <p><span class="person">高堂萌人</span>氏からGPTのカスタマイズに関する質問がありましたが、<span class="person">伏見</span>氏は特別なカスタマイズは行っていないと回答しました<span class="time-stamp">00:06:12</span>。</p>
+                </div>
+                
+                <div class="card">
+                    <h2 class="section-title">キーワード検索の注意点</h2>
+                    <p><span class="person">伏見</span>氏は、GPTを用いたキーワード検索において、<span class="highlight">曖昧な表現や複雑な日本語</span>を使用すると、誤った結果が返される可能性があることを指摘しました<span class="time-stamp">00:14:44</span>。</p>
+                    <p>正確な情報を取得するためには、<span class="highlight">企業IDなどの明確な識別子</span>を使用する方が効果的であると説明しました。</p>
+                </div>
+            </div>
+            
+            <div class="column">
+                <div class="card">
+                    <h2 class="section-title">参加者への実践演習</h2>
+                    <p><span class="person">伏見</span>氏は、参加者に対して、自身でSQLを作成し、Ridash上で実行する演習を実施させました<span class="time-stamp">00:16:37</span>。</p>
+                    <p><span class="person">室屋里緒</span>氏と<span class="person">園田麻衣子</span>氏からは、Ridashの利用経験がないという発言があり、今後の別途研修の必要性が示唆されました<span class="time-stamp">00:18:08</span>。</p>
+                    <div class="action-item">Ridash研修の実施が必要</div>
+                </div>
+                
+                <div class="card">
+                    <h2 class="section-title">コンシェルジュ業務の効率化</h2>
+                    <p><span class="person">伏見</span>氏は、GPTを用いてコンシェルジュ業務を効率化できる可能性を示しました。具体的には、アムジェンからの依頼状況や、予約済みだが利用されていない案件などをGPTで抽出することに成功しました<span class="time-stamp">00:18:46</span>。</p>
+                    <p>これにより、コンシェルジュの業務負担を軽減し、顧客への対応を改善できる可能性が示されました。</p>
+                </div>
+                
+                <div class="card">
+                    <h2 class="section-title">GPTを用いたマニュアル作成支援</h2>
+                    <p><span class="person">高堂萌人</span>氏の発案により、コンシェルジュ業務のマニュアルを元に、業務に関する質問に回答するボットを作成することが提案されました<span class="time-stamp">00:27:16</span>。</p>
+                    <p><span class="person">伏見</span>氏は、GPTを用いて簡単にマニュアルを基にしたボットを作成できることを実演しました<span class="time-stamp">00:29:35</span>。</p>
+                </div>
+                
+                <div class="card">
+                    <h2 class="section-title">AIの社内活用の可能性</h2>
+                    <p><span class="person">室屋里緒</span>氏は、顧客向け連絡へのAI活用の慎重さを訴え、社内向けFAQへの活用を提案しました<span class="time-stamp">00:31:38</span>。</p>
+                    <p>社内向けFAQの充実により、業務効率の向上と、新入社員の教育コスト削減の可能性が議論されました。</p>
+                </div>
+            </div>
+            
+            <div class="column">
+                <div class="card">
+                    <h2 class="section-title">RPAとGPTの連携による業務自動化</h2>
+                    <p><span class="person">名取やよい</span>氏より、RPAを用いた外部データ登録の自動化の可能性について検討されました<span class="time-stamp">00:38:47</span>。</p>
+                    <p><span class="person">伏見</span>氏は、RPAとGPTの連携によって、見積もりIDとファイル名の一致確認を除く多くの工程を自動化できる可能性を示唆しました。ただし、<span class="highlight">個人情報取り扱いに関するガイドライン整備</span>の必要性も指摘されました<span class="time-stamp">00:43:39</span>。</p>
+                    <div class="action-item">個人情報保護ガイドラインの整備</div>
+                </div>
+                
+                <div class="card">
+                    <h2 class="section-title">AI活用における注意点と今後の展望</h2>
+                    <p><span class="person">伏見</span>氏は、AIの活用範囲の拡大、特に予約業務への適用可能性について言及し、将来的な業務効率化への期待を示しました<span class="time-stamp">00:46:44</span>。</p>
+                    <p>しかし、AIの活用には、<span class="highlight">データの正確性</span>や<span class="highlight">個人情報の取り扱い</span>など、注意すべき点も多く指摘されました。</p>
+                </div>
+                
+                <div class="card">
+                    <h2 class="section-title">今後の予定</h2>
+                    <p>1. <span class="highlight">Ridash研修の実施</span>：<span class="person">室屋里緒</span>氏、<span class="person">園田麻衣子</span>氏をはじめとする未経験者向けに、Ridashの基本操作と活用方法に関する研修を実施する。</p>
+                    <p>2. <span class="highlight">個人情報保護ガイドラインの整備</span>：AI活用における個人情報の取り扱いについて、明確なガイドラインを策定し、全社で共有する。</p>
+                    <p>3. <span class="highlight">コンシェルジュ業務のAI活用拡大</span>：GPTを用いたマニュアル作成支援やFAQボットの開発を進め、業務効率化を図る。</p>
+                </div>
+                
+                <div class="card">
+                    <h2 class="section-title">関連資料</h2>
+                    <p>• 会議の録画</p>
+                    <p>• 文字起こし</p>
+                    <p>• MYGPTs エイチの勉強会 - 2025/03/21 14:24 JST - Gemini によるメモ</p>
+                    <p style="font-size: 12px; font-style: italic; margin-top: 10px;">*Gemini のメモの内容が正確か確認する必要があります。 Gemini がメモを取る方法のヒントや仕組み*</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>このグラフィックレコーディングは勉強会の内容を視覚的にまとめたものです。詳細は会議の録画や文字起こしをご確認ください。</p>
+        </div>
+    </div>
+</body>
+</html>
