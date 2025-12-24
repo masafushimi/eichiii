@@ -1,0 +1,461 @@
+import React, { useState, useEffect } from 'react';
+import { 
+  ChevronRight, 
+  ChevronLeft, 
+  Building2, 
+  TrendingUp, 
+  Layers, 
+  Target, 
+  Users, 
+  BarChart3, 
+  Briefcase,
+  ArrowRight,
+  CheckCircle2,
+  XCircle,
+  ShieldCheck,
+  Lightbulb
+} from 'lucide-react';
+
+const SlideDeck = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const totalSlides = 9;
+
+  const nextSlide = () => {
+    if (currentSlide < totalSlides - 1) {
+      setCurrentSlide(currentSlide + 1);
+    }
+  };
+
+  const prevSlide = () => {
+    if (currentSlide > 0) {
+      setCurrentSlide(currentSlide - 1);
+    }
+  };
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        nextSlide();
+      } else if (e.key === 'ArrowLeft') {
+        prevSlide();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [currentSlide]);
+
+  const Slide = ({ children, title, subtitle }) => (
+    <div className="flex flex-col h-full p-8 bg-white shadow-xl rounded-xl border border-gray-200 overflow-hidden relative">
+      <div className="mb-6 border-b-2 border-blue-600 pb-4 flex justify-between items-end">
+        <div>
+          <h2 className="text-3xl font-bold text-slate-800">{title}</h2>
+          {subtitle && <p className="text-lg text-slate-500 mt-1">{subtitle}</p>}
+        </div>
+        <div className="text-blue-600 font-bold opacity-20 text-6xl absolute top-4 right-8">
+          {currentSlide + 1}
+        </div>
+      </div>
+      <div className="flex-grow overflow-y-auto">
+        {children}
+      </div>
+      <div className="mt-4 pt-4 border-t border-gray-100 flex justify-between text-sm text-gray-400">
+        <span>Project: SUZUKEN Asset Utilization</span>
+        <span>Proposed by H-MR</span>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="min-h-screen bg-slate-100 flex flex-col items-center justify-center p-4 font-sans text-slate-800">
+      {/* Controls Info */}
+      <div className="mb-4 text-gray-500 text-sm flex gap-4">
+        <span className="flex items-center"><ChevronLeft size={16} /> 前へ (左キー)</span>
+        <span className="flex items-center">次へ (右キー / Space) <ChevronRight size={16} /></span>
+      </div>
+
+      {/* Slide Container */}
+      <div className="w-full max-w-5xl aspect-[16/9] relative">
+        
+        {/* Slide 1: Title */}
+        {currentSlide === 0 && (
+          <Slide title="" subtitle="">
+            <div className="flex flex-col items-center justify-center h-full text-center space-y-8">
+              <div className="bg-blue-600 text-white p-4 rounded-full mb-4">
+                <Building2 size={64} />
+              </div>
+              <div>
+                <h3 className="text-xl text-blue-600 font-bold tracking-widest mb-2">PROJECT PROPOSAL</h3>
+                <h1 className="text-5xl font-extrabold text-slate-900 leading-tight mb-4">
+                  株式会社スズケン様向け<br/>遊休資産活用事業のご提案
+                </h1>
+                <p className="text-2xl text-slate-600">
+                  「場所貸し」から「医薬品業界のオフライン・インフラ」への転換
+                </p>
+              </div>
+              <div className="mt-12 bg-white px-8 py-3 rounded-full border border-gray-300 shadow-sm">
+                <p className="text-gray-500 font-medium">株式会社 エイチ</p>
+              </div>
+            </div>
+          </Slide>
+        )}
+
+        {/* Slide 2: Agenda */}
+        {currentSlide === 1 && (
+          <Slide title="Agenda" subtitle="本日のアジェンダ">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 h-full items-center px-12">
+              <div className="space-y-6">
+                {[
+                  "前提共有：スズケンの資産ポテンシャルと課題",
+                  "核心論点：「固定資産圧縮」のメカニズム",
+                  "提供価値：介入深度による「3つの階層」",
+                  "解決策：7つのビジネスモデル（MECE整理）",
+                  "競合優位性：他卸との決定的な差別化",
+                  "ロードマップ：段階的アプローチ"
+                ].map((item, idx) => (
+                  <div key={idx} className="flex items-center p-4 bg-slate-50 rounded-lg border-l-4 border-blue-500 shadow-sm">
+                    <span className="text-2xl font-bold text-blue-300 mr-4">0{idx + 1}</span>
+                    <span className="text-lg font-semibold text-slate-700">{item}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="hidden md:flex justify-center opacity-80">
+                <Target size={240} className="text-blue-100" />
+              </div>
+            </div>
+          </Slide>
+        )}
+
+        {/* Slide 3: Premise */}
+        {currentSlide === 2 && (
+          <Slide title="前提共有" subtitle="国内屈指の医療流通網：スズケンの「余白」をどう捉えるか">
+            <div className="grid grid-cols-2 gap-8 h-full">
+              <div className="bg-blue-50 p-6 rounded-xl">
+                <h3 className="text-xl font-bold text-blue-800 mb-4 flex items-center">
+                  <Building2 className="mr-2" /> 圧倒的な資産背景
+                </h3>
+                <ul className="space-y-3">
+                  <li className="flex items-start">
+                    <CheckCircle2 className="text-blue-500 mr-2 mt-1 flex-shrink-0" size={18} />
+                    <span>全国 <strong>約209箇所</strong> の営業拠点（支店・営業所）</span>
+                  </li>
+                  <li className="flex items-start">
+                    <CheckCircle2 className="text-blue-500 mr-2 mt-1 flex-shrink-0" size={18} />
+                    <span><strong>近畿エリアの充実</strong>：大阪中央、千里、堺、岸和田など主要都市から郊外まで網羅</span>
+                  </li>
+                  <li className="flex items-start">
+                    <CheckCircle2 className="text-blue-500 mr-2 mt-1 flex-shrink-0" size={18} />
+                    <span>医療専用区画としての信頼性・セキュリティ・アクセス</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="bg-red-50 p-6 rounded-xl">
+                <h3 className="text-xl font-bold text-red-800 mb-4 flex items-center">
+                  <TrendingUp className="mr-2" /> 構造的な課題
+                </h3>
+                <ul className="space-y-3">
+                  <li className="flex items-start">
+                    <Users className="text-red-500 mr-2 mt-1 flex-shrink-0" size={18} />
+                    <span>営業スタイルの変化（直行直帰・モバイル化）</span>
+                  </li>
+                  <li className="flex items-start">
+                    <ArrowRight className="text-red-500 mr-2 mt-1 flex-shrink-0" size={18} />
+                    <span>常駐前提のオフィス設計と実態の乖離</span>
+                  </li>
+                  <li className="flex items-start">
+                    <div className="bg-white p-3 rounded border border-red-200 w-full mt-2">
+                      <p className="font-bold text-red-600 text-center">
+                        「偶発的な空室」ではなく<br/>
+                        「構造的な余剰スペース」が発生
+                      </p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div className="col-span-2 bg-slate-800 text-white p-4 rounded-lg text-center font-bold text-lg">
+                結論：これは単なる「空き部屋」ではなく、医療業界における「未活用のインフラ」である
+              </div>
+            </div>
+          </Slide>
+        )}
+
+        {/* Slide 4: Logic */}
+        {currentSlide === 3 && (
+          <Slide title="核心論点" subtitle="レンタルスペース事業は「固定資産圧縮」になるか？">
+            <div className="space-y-8">
+              <p className="text-xl text-center font-bold mb-6">
+                「自前で貸す」だけでは資産は減らない。<br/>
+                <span className="text-blue-600 border-b-4 border-blue-200">「外部化」して初めてBS（バランスシート）は軽くなる。</span>
+              </p>
+
+              <div className="grid grid-cols-2 gap-8">
+                {/* Bad Pattern */}
+                <div className="border-2 border-gray-200 rounded-xl p-6 relative opacity-70">
+                  <div className="absolute -top-4 left-6 bg-gray-500 text-white px-4 py-1 rounded-full text-sm font-bold">
+                    圧縮にならない
+                  </div>
+                  <h4 className="text-lg font-bold mb-4 text-gray-700">自社運用モデル</h4>
+                  <div className="flex items-center justify-center space-x-2 mb-4">
+                    <div className="bg-gray-200 p-4 rounded text-center text-sm w-24">スズケン<br/>(資産保有)</div>
+                    <ArrowRight size={20} />
+                    <div className="bg-gray-200 p-4 rounded text-center text-sm w-24">運営・管理<br/>(自社)</div>
+                    <ArrowRight size={20} />
+                    <div className="bg-gray-200 p-4 rounded text-center text-sm w-24">貸出</div>
+                  </div>
+                  <ul className="text-sm space-y-2 text-gray-600">
+                    <li className="flex items-center"><XCircle size={16} className="mr-2 text-red-400"/> 固定資産はそのまま</li>
+                    <li className="flex items-center"><XCircle size={16} className="mr-2 text-red-400"/> 設備投資で資産増リスク</li>
+                  </ul>
+                </div>
+
+                {/* Good Pattern */}
+                <div className="border-2 border-blue-500 bg-blue-50 rounded-xl p-6 relative">
+                  <div className="absolute -top-4 left-6 bg-blue-600 text-white px-4 py-1 rounded-full text-sm font-bold shadow-lg">
+                    圧縮になる（ROA向上）
+                  </div>
+                  <h4 className="text-lg font-bold mb-4 text-blue-900">プラットフォーム活用モデル</h4>
+                  <div className="flex items-center justify-center space-x-2 mb-4">
+                    <div className="bg-white border border-blue-200 p-4 rounded text-center text-sm w-24">スズケン</div>
+                    <ArrowRight size={20} className="text-blue-500"/>
+                    <div className="bg-blue-600 text-white p-4 rounded text-center text-sm w-24 font-bold shadow-md">エイチMR<br/>(ハブ)</div>
+                    <ArrowRight size={20} className="text-blue-500"/>
+                    <div className="bg-white border border-blue-200 p-4 rounded text-center text-sm w-24">外部利用</div>
+                  </div>
+                  <ul className="text-sm space-y-2 text-blue-800 font-medium">
+                    <li className="flex items-center"><CheckCircle2 size={16} className="mr-2 text-blue-600"/> 外部貸出で収益化（可視化）</li>
+                    <li className="flex items-center"><CheckCircle2 size={16} className="mr-2 text-blue-600"/> <strong>不要拠点の統廃合・解約が可能に</strong></li>
+                    <li className="flex items-center"><CheckCircle2 size={16} className="mr-2 text-blue-600"/> 営業拠点戦略の最適化</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </Slide>
+        )}
+
+        {/* Slide 5: The Layers */}
+        {currentSlide === 4 && (
+          <Slide title="提供価値" subtitle="サプライチェーンの深さに応じた「3つの階層」">
+            <div className="flex flex-col items-center justify-center h-full pb-8">
+              <p className="mb-8 text-center text-gray-600">
+                我々は「場所貸し（Layer 1）」から入り、<br/>
+                最終的には「経営構造の変革（Layer 3）」までコミットします。
+              </p>
+              
+              <div className="w-3/4 flex flex-col space-y-2">
+                {/* Layer 3 */}
+                <div className="bg-slate-800 text-white p-6 rounded-t-xl relative shadow-lg transform translate-y-2 z-10 mx-4">
+                  <div className="absolute top-0 right-0 bg-yellow-500 text-xs font-bold px-2 py-1 rounded-bl text-slate-900">High Impact</div>
+                  <h4 className="text-xl font-bold flex items-center mb-2">
+                    <BarChart3 className="mr-3 text-yellow-400" />
+                    Layer 3: 経営・資産層 (Structural)
+                  </h4>
+                  <div className="flex justify-between items-end pl-9">
+                    <span className="text-sm text-gray-300">提供価値: <strong>BS最適化・固定資産圧縮</strong></span>
+                    <span className="text-xs bg-slate-700 px-2 py-1 rounded">撤退支援 / 戦略設計 / 経営データ</span>
+                  </div>
+                </div>
+
+                {/* Layer 2 */}
+                <div className="bg-blue-600 text-white p-6 relative shadow-md z-20 mx-2">
+                  <h4 className="text-xl font-bold flex items-center mb-2">
+                    <Briefcase className="mr-3 text-blue-200" />
+                    Layer 2: 業務・プロセス層 (Process)
+                  </h4>
+                  <div className="flex justify-between items-end pl-9">
+                    <span className="text-sm text-blue-100">提供価値: <strong>営業DX・効率化</strong></span>
+                    <span className="text-xs bg-blue-800 px-2 py-1 rounded">共同利用 / 用途拡張 / 行動分析</span>
+                  </div>
+                </div>
+
+                {/* Layer 1 */}
+                <div className="bg-blue-400 text-white p-6 rounded-b-xl relative shadow-sm z-30">
+                  <h4 className="text-xl font-bold flex items-center mb-2">
+                    <Building2 className="mr-3 text-blue-100" />
+                    Layer 1: 物理・リソース層 (Physical)
+                  </h4>
+                  <div className="flex justify-between items-end pl-9">
+                    <span className="text-sm text-blue-50">提供価値: <strong>遊休資産の収益化（PL改善）</strong></span>
+                    <span className="text-xs bg-blue-500 px-2 py-1 rounded">仲介 / 運営受託</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Slide>
+        )}
+
+        {/* Slide 6: 7 Models */}
+        {currentSlide === 5 && (
+          <Slide title="解決策：7つのモデル" subtitle="全方位で価値を最大化するMECEな全体設計">
+            <div className="grid grid-cols-3 gap-4 h-full content-start pt-4">
+              
+              {/* Column A */}
+              <div className="space-y-4">
+                <div className="bg-green-50 p-3 rounded-lg border border-green-200 text-center font-bold text-green-800">
+                  A: エントリー (即効性)
+                </div>
+                <div className="bg-white p-4 rounded shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+                  <div className="font-bold text-lg mb-1 flex items-center"><Users size={16} className="mr-2 text-green-600"/>① 仲介モデル</div>
+                  <p className="text-xs text-gray-500">製薬業界限定マッチング。<br/>最も手軽な実証実験。</p>
+                </div>
+              </div>
+
+              {/* Column B */}
+              <div className="space-y-4">
+                <div className="bg-blue-50 p-3 rounded-lg border border-blue-200 text-center font-bold text-blue-800">
+                  B: ビジネス/運営 (事業化)
+                </div>
+                <div className="bg-white p-4 rounded shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+                  <div className="font-bold text-lg mb-1 flex items-center"><Building2 size={16} className="mr-2 text-blue-600"/>③ 運営受託モデル</div>
+                  <p className="text-xs text-gray-500">エイチによる借上げ・運営。<br/>手間ゼロ・高収益。</p>
+                </div>
+                <div className="bg-white p-4 rounded shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+                  <div className="font-bold text-lg mb-1 flex items-center"><Briefcase size={16} className="mr-2 text-blue-600"/>④ 共同利用モデル</div>
+                  <p className="text-xs text-gray-500">特定メーカーとの包括契約。<br/>サテライトオフィス化。</p>
+                </div>
+                <div className="bg-white p-4 rounded shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+                  <div className="font-bold text-lg mb-1 flex items-center"><Layers size={16} className="mr-2 text-blue-600"/>⑤ 用途拡張モデル</div>
+                  <p className="text-xs text-gray-500">医療機器デモ、研修、<br/>採用イベントへ転用。</p>
+                </div>
+              </div>
+
+              {/* Column C */}
+              <div className="space-y-4">
+                <div className="bg-purple-50 p-3 rounded-lg border border-purple-200 text-center font-bold text-purple-800">
+                  C: 経営/戦略 (本質的価値)
+                </div>
+                <div className="bg-white p-4 rounded shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+                  <div className="font-bold text-lg mb-1 flex items-center"><Lightbulb size={16} className="mr-2 text-purple-600"/>② 戦略設計モデル</div>
+                  <p className="text-xs text-gray-500">拠点運用のコンサルティング。<br/>働き方改革支援。</p>
+                </div>
+                <div className="bg-white p-4 rounded shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+                  <div className="font-bold text-lg mb-1 flex items-center"><BarChart3 size={16} className="mr-2 text-purple-600"/>⑥ データ・指標モデル</div>
+                  <p className="text-xs text-gray-500">MR動線・稼働率の可視化。<br/>意思決定材料の提供。</p>
+                </div>
+                <div className="bg-white p-4 rounded shadow-sm border border-gray-200 hover:shadow-md transition-shadow ring-2 ring-purple-100">
+                  <div className="font-bold text-lg mb-1 flex items-center"><Target size={16} className="mr-2 text-purple-600"/>⑦ 撤退支援モデル</div>
+                  <p className="text-xs text-gray-500 font-bold">不採算拠点の整理・統廃合。<br/>最大のBS圧縮効果。</p>
+                </div>
+              </div>
+            </div>
+          </Slide>
+        )}
+
+        {/* Slide 7: Advantage */}
+        {currentSlide === 6 && (
+          <Slide title="競合優位性" subtitle="他卸との決定的な差別化：「情報のハブ」へ">
+            <div className="flex flex-col h-full justify-center">
+              <table className="w-full text-left border-collapse rounded-lg overflow-hidden shadow-lg">
+                <thead>
+                  <tr className="bg-gray-800 text-white">
+                    <th className="p-4 w-1/4">比較軸</th>
+                    <th className="p-4 w-1/3 bg-gray-700 text-gray-300">これまでの医薬品卸<br/><span className="text-xs font-normal">（競合他社）</span></th>
+                    <th className="p-4 w-1/3 bg-blue-700 text-white text-lg">これからのスズケン<br/><span className="text-sm font-normal">（本提案）</span></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="bg-white border-b border-gray-200">
+                    <td className="p-4 font-bold text-gray-700">支店の役割</td>
+                    <td className="p-4 text-gray-500">倉庫・配送センター<br/><span className="text-xs">（コストセンター）</span></td>
+                    <td className="p-4 font-bold text-blue-800 bg-blue-50">医療プラットフォーム<br/><span className="text-sm text-blue-600">（プロフィットセンター）</span></td>
+                  </tr>
+                  <tr className="bg-white border-b border-gray-200">
+                    <td className="p-4 font-bold text-gray-700">メーカーとの関係</td>
+                    <td className="p-4 text-gray-500">販売委託先<br/><span className="text-xs">（売ってくれる相手）</span></td>
+                    <td className="p-4 font-bold text-blue-800 bg-blue-50">事業パートナー<br/><span className="text-sm text-blue-600">（営業活動を支えてくれる相手・物理的ロックイン）</span></td>
+                  </tr>
+                  <tr className="bg-white border-b border-gray-200">
+                    <td className="p-4 font-bold text-gray-700">強みとなる資産</td>
+                    <td className="p-4 text-gray-500">物流網（トラック・倉庫）<br/><span className="text-xs">「速く届ける」</span></td>
+                    <td className="p-4 font-bold text-blue-800 bg-blue-50">場所とデータ（拠点・動線）<br/><span className="text-sm text-blue-600">「効率よくつなぐ」</span></td>
+                  </tr>
+                  <tr className="bg-white">
+                    <td className="p-4 font-bold text-gray-700">保有データ</td>
+                    <td className="p-4 text-gray-500">実消化データのみ</td>
+                    <td className="p-4 font-bold text-blue-800 bg-blue-50">上記 ＋ MR活動・エリア稼働データ<br/><span className="text-sm text-blue-600">（他社にない独自資産）</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </Slide>
+        )}
+
+        {/* Slide 8: Roadmap */}
+        {currentSlide === 7 && (
+          <Slide title="ロードマップ" subtitle="データ取得を起点とした段階的アプローチ">
+            <div className="relative flex flex-col justify-center h-full space-y-8 pl-8">
+              {/* Connecting Line */}
+              <div className="absolute left-16 top-10 bottom-10 w-1 bg-gray-200 z-0"></div>
+
+              {/* Phase 1 */}
+              <div className="relative z-10 flex items-center w-full">
+                <div className="bg-green-500 text-white w-16 h-16 rounded-full flex items-center justify-center font-bold text-xl shadow-md border-4 border-white">
+                  Ph1
+                </div>
+                <div className="ml-8 bg-white p-6 rounded-lg shadow-sm border-l-4 border-green-500 flex-1">
+                  <h4 className="text-lg font-bold text-green-700">可視化と実績作り（モデル①＋⑥）</h4>
+                  <p className="text-gray-600 mt-1">主要拠点（大阪中央・千里等）でのトライアル掲載。<br/>「誰が、いつ使ったか」のMR動線データを蓄積。</p>
+                </div>
+              </div>
+
+              {/* Phase 2 */}
+              <div className="relative z-10 flex items-center w-full">
+                <div className="bg-blue-500 text-white w-16 h-16 rounded-full flex items-center justify-center font-bold text-xl shadow-md border-4 border-white">
+                  Ph2
+                </div>
+                <div className="ml-8 bg-white p-6 rounded-lg shadow-sm border-l-4 border-blue-500 flex-1">
+                  <h4 className="text-lg font-bold text-blue-700">戦略パートナー化（モデル②＋④）</h4>
+                  <p className="text-gray-600 mt-1">データに基づく製薬企業との年間包括契約。<br/>社内での「貸せる拠点 / 畳む拠点」の選別基準策定。</p>
+                </div>
+              </div>
+
+              {/* Phase 3 */}
+              <div className="relative z-10 flex items-center w-full">
+                <div className="bg-purple-500 text-white w-16 h-16 rounded-full flex items-center justify-center font-bold text-xl shadow-md border-4 border-white">
+                  Ph3
+                </div>
+                <div className="ml-8 bg-white p-6 rounded-lg shadow-sm border-l-4 border-purple-500 flex-1">
+                  <h4 className="text-lg font-bold text-purple-700">ポートフォリオ変革（モデル③＋⑦）</h4>
+                  <p className="text-gray-600 mt-1">高稼働拠点の運営受託と、不採算拠点の統廃合を同時実行。<br/>固定資産圧縮と収益化の実現。</p>
+                </div>
+              </div>
+            </div>
+          </Slide>
+        )}
+
+        {/* Slide 9: Conclusion */}
+        {currentSlide === 8 && (
+          <Slide title="" subtitle="">
+             <div className="flex flex-col items-center justify-center h-full text-center space-y-12">
+              <ShieldCheck size={80} className="text-blue-600" />
+              <h2 className="text-4xl font-bold text-slate-800 leading-normal">
+                競合他社が『物流の効率化』を競っている間に、<br/>
+                スズケン様だけが<span className="text-blue-600">『商流のハブ化』</span>を実現できます。
+              </h2>
+              <div className="bg-gray-100 p-8 rounded-xl max-w-3xl">
+                <p className="text-xl text-slate-700">
+                  空きスペースの貸し出しは、不動産事業ではありません。<br/>
+                  最強の卸機能を構築するための<br/>
+                  <strong>「オフライン・プラットフォーム戦略」</strong>です。
+                </p>
+              </div>
+              <p className="text-gray-500 mt-8">ご清聴ありがとうございました。</p>
+            </div>
+          </Slide>
+        )}
+
+      </div>
+
+      {/* Progress Bar */}
+      <div className="w-full max-w-5xl mt-6 h-2 bg-gray-200 rounded-full overflow-hidden">
+        <div 
+          className="h-full bg-blue-600 transition-all duration-300"
+          style={{ width: `${((currentSlide + 1) / totalSlides) * 100}%` }}
+        ></div>
+      </div>
+    </div>
+  );
+};
+
+export default SlideDeck;
